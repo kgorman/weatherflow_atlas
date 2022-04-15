@@ -1,5 +1,5 @@
 # weatherflow_atlas
-A simple agent to stream data from a WeatherFlow Tempest weather station to MongoDB Atlas
+A simple agent to stream data from a [WeatherFlow Tempest](https://shop.weatherflow.com/collections/frontpage/products/tempest) weather station to MongoDB Atlas
 
 # install
 ### Clone this repo
