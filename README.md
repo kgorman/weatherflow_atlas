@@ -1,5 +1,5 @@
 # weatherflow_atlas
-A simple agent to stream Octoprint information from 3d printing process to MongoDB Atlas
+A simple agent to stream data from a WeatherFlow Tempest weather station to MongoDB Atlas
 
 # install
 ### Clone this repo
