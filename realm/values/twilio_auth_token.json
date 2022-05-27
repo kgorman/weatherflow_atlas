@@ -1,5 +1,5 @@
 {
     "name": "twilio_auth_token",
-    "value": "3446d37f748a0c91d833a600cd95d272",
-    "from_secret": false
+    "value": "twilio_auth_token_secret",
+    "from_secret": true
 }

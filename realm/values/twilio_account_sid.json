@@ -1,5 +1,5 @@
 {
     "name": "twilio_account_sid",
-    "value": "AC4d0ea8d08742f70ba5aff90da6bbe10a",
-    "from_secret": false
+    "value": "twilio_account_sid_secret",
+    "from_secret": true
 }
