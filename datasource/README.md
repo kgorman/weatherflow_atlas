@@ -1,4 +1,4 @@
-# weatherflow_atlas
+# Weatherflow Atlas Client
 A simple agent to stream data from a [WeatherFlow Tempest](https://shop.weatherflow.com/collections/frontpage/products/tempest) weather station to MongoDB Atlas.
 
 # install
