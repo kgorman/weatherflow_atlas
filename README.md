@@ -1,32 +1,12 @@
-# weatherflow_atlas
-A simple agent to stream data from a [WeatherFlow Tempest](https://shop.weatherflow.com/collections/frontpage/products/tempest) weather station to MongoDB Atlas
+# WeatherFlow Atlas
 
-# install
-### Clone this repo
-Open a terminal window and run the following commands from a convenient directory on your machine:
+A application built on MongoDB Atlas for various weather related stream processing, event processing, and real-time data analysis, alerting and analytics use-cases.
 
-```
-git clone git@github.com:kgorman/weatherflow_atlas.git
-cd weatherflow_atlas
-```
 
-### Create an environment file
-In the same terminal window and directory, create an .env file
+## Client
 
-```
-echo "SOURCE_BASE_URL=https://swd.weatherflow.com/swd/rest/observations/station/" >> env.txt
-echo "SOURCE_STATION=<<your station ID" > env.txt
-echo "SOURCE_KEY=<<your source key>>" > env.txt
+A client exists to pull data from Tempest weather stations, and push it to MongoDB Atlas. [See Here](./datasource/)
 
-echo "TARGET_BASE_URL=https://data.mongodb-api.com/app/<< your endpoint key>>/endpoint/data/beta/action/insertOne" > env.txt
-echo "TARGET_KEY=<<your data api key>>" > env.txt
-echo "TARGET_NAME=<<your cluster>>" > env.txt
-echo "TARGET_DATABASE=<<your database>>" > env.txt
-echo "TARGET_COLLECTION=weather" > env.txt
-```
+## MongoDB Atlas streaming components 
 
-## run it
-```
-docker build . -t weatherflow_atlas
-docker run -it --env-file env.txt weatherflow_atlas
-```
+Atlas triggers and functions are [defined here](./realm/). They utilize Github integration for committing files to Atlas, see more [documentation here](https://www.mongodb.com/docs/atlas/app-services/manage-apps/deploy/automated/deploy-automatically-with-github/) for how to link/configure your repository with Atlas.
