@@ -1,0 +1,27 @@
+{
+    "id": "625d74fbfb7510d8dcebf464",
+    "name": "lightningProd",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "demo",
+        "collection": "inbound",
+        "service_name": "KGShardedCluster01",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": true,
+        "skip_catchup_events": false
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "Atlas_Triggers_lightningProd_1651502902"
+            }
+        }
+    }
+}

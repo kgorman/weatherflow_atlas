@@ -1,0 +1,27 @@
+{
+    "id": "62588d71c292768ed88c04ed",
+    "name": "lightening",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "myFirstDatabase",
+        "collection": "weather",
+        "service_name": "Cluster0",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": false,
+        "skip_catchup_events": false
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "Atlas_Triggers_lightening_1650034343"
+            }
+        }
+    }
+}

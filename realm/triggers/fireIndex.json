@@ -1,0 +1,27 @@
+{
+    "id": "626ff86c2963fe36a0e778ec",
+    "name": "fireIndex",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "demo",
+        "collection": "inbound",
+        "service_name": "KGShardedCluster01",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": false,
+        "skip_catchup_events": false
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "Atlas_Triggers_fireIndex_1651515425"
+            }
+        }
+    }
+}
