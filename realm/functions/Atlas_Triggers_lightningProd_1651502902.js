@@ -51,6 +51,8 @@ exports = function(changeEvent) {
 
     /* log what this run found */
     if (fullDocument) {
+
+        /* standard log type collection */
         const logDocument = { 
             station_id: fullDocument.station_id, 
             strikeFound: strikeFound,
@@ -59,11 +61,10 @@ exports = function(changeEvent) {
         };
         logCollection.insertOne(logDocument);
 
-        const tsDocument = {
-            metadata: {station: fullDocument.station_id},
-            ts: fullDocument.createdAt,
-            air_temperature: fullDocument.obs[0].air_temperature
-        }
+        /* timeseries */
+        const tsDocument = fullDocument.obs[0];
+        tsDocument.metadata = {station: fullDocument.station_id};
+        tsDocument.ts = fullDocument.createdAt;
         tsCollection.insertOne(tsDocument);
     }
 
