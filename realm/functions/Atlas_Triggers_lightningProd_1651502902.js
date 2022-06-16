@@ -62,7 +62,7 @@ exports = function(changeEvent) {
         const tsDocument = {
             metadata: {station: fullDocument.station_id},
             ts: fullDocument.createdAt,
-            temperature: fullDocument.temperature
+            air_temperature: fullDocument.air_temperature
         }
         tsCollection.insertOne(tsDocument);
     }
