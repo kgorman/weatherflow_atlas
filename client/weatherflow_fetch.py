@@ -16,6 +16,7 @@ TARGET_NAME = os.environ.get('TARGET_NAME')
 TARGET_COLLECTION = os.environ.get('TARGET_COLLECTION')
 TARGET_DATABASE = os.environ.get('TARGET_DATABASE')
 TARGET_TOPIC = os.environ.get('TARGET_TOPIC')
+TARGET_KAFKA = os.environ.get('TARGET_KAFKA')
 
 def fetch():
     url = "{}{}/?token={}".format(SOURCE_BASE_URL, SOURCE_STATION, SOURCE_KEY)
@@ -56,7 +57,7 @@ def main():
         try:
             print(send())
         except Exception as e:
-            print("ERROR: unable to fetch {}").format(e)
+            print("ERROR: unable to fetch {}".format(e))
         time.sleep(30)
 
 if __name__ == "__main__":
