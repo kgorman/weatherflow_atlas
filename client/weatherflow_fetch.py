@@ -3,6 +3,9 @@ import json
 import os
 import time
 
+from confluent_kafka import Producer
+import socket
+
 SOURCE_BASE_URL = os.environ.get('SOURCE_BASE_URL')
 SOURCE_KEY = os.environ.get('SOURCE_KEY')
 SOURCE_STATION = os.environ.get('SOURCE_STATION')
@@ -15,14 +18,15 @@ TARGET_DATABASE = os.environ.get('TARGET_DATABASE')
 
 def fetch():
     url = "{}{}/?token={}".format(SOURCE_BASE_URL, SOURCE_STATION, SOURCE_KEY)
-    print(url)
+    # print(url)
     response = requests.get(url)
     return response.json()
 
 def send():
     source_data = fetch()
-    now = str(round(time.time() * 1000))
+    now = str(round(time.time() * 1000))                            # new TS
     source_data['createdAt'] = { "$date": { "$numberLong": now }}
+    # print(len(json.dumps(source_data).encode('utf-16')))            # how big is the message?
 
     headers = {
         'Content-Type': 'application/json',
@@ -37,11 +41,21 @@ def send():
     })
     response = requests.post(TARGET_BASE_URL, headers=headers, data=raw_data)
     print(raw_data)
+
+    # throw into local kafka
+    conf = {'bootstrap.servers': "broker:9092"}
+    producer = Producer(conf)
+    producer.produce("kg", key="kg", value=json.dumps(source_data))
+    producer.flush()
+
     return response
 
 def main():
     while True:
-        print(send())
+        try:
+            print(send())
+        except Exception as e:
+            print("ERROR: unable to fetch {}").format(e)
         time.sleep(30)
 
 if __name__ == "__main__":
