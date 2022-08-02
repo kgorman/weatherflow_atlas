@@ -45,7 +45,7 @@ def send():
     print(raw_data)
 
     # throw into local kafka
-    conf = {'bootstrap.servers': "broker:9092"}
+    conf = {'bootstrap.servers': TARGET_KAFKA}
     producer = Producer(conf)
     producer.produce(TARGET_TOPIC, value=json.dumps(source_data))
     producer.flush()
