@@ -15,6 +15,7 @@ TARGET_KEY = os.environ.get('TARGET_KEY')
 TARGET_NAME = os.environ.get('TARGET_NAME')
 TARGET_COLLECTION = os.environ.get('TARGET_COLLECTION')
 TARGET_DATABASE = os.environ.get('TARGET_DATABASE')
+TARGET_TOPIC = os.environ.get('TARGET_TOPIC')
 
 def fetch():
     url = "{}{}/?token={}".format(SOURCE_BASE_URL, SOURCE_STATION, SOURCE_KEY)
@@ -45,7 +46,7 @@ def send():
     # throw into local kafka
     conf = {'bootstrap.servers': "broker:9092"}
     producer = Producer(conf)
-    producer.produce("kg", key="kg", value=json.dumps(source_data))
+    producer.produce(TARGET_TOPIC, value=json.dumps(source_data))
     producer.flush()
 
     return response
