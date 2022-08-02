@@ -20,16 +20,15 @@ TARGET_KAFKA = os.environ.get('TARGET_KAFKA')
 
 def fetch():
     url = "{}{}/?token={}".format(SOURCE_BASE_URL, SOURCE_STATION, SOURCE_KEY)
-    # print(url)
     response = requests.get(url)
-    return response.json()
+    d = response.json()
+    now = str(round(time.time() * 1000))
+    d['createdAt'] = { "$date": { "$numberLong": now }}
+    # print(len(json.dumps(response).encode('utf-16')))            # how big is the message?
+    print(d)
+    return d
 
-def send():
-    source_data = fetch()
-    now = str(round(time.time() * 1000))                            # new TS
-    source_data['createdAt'] = { "$date": { "$numberLong": now }}
-    # print(len(json.dumps(source_data).encode('utf-16')))            # how big is the message?
-
+def send_to_atlas(payload):
     headers = {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
@@ -39,23 +38,31 @@ def send():
             "dataSource": TARGET_NAME,
             "database": TARGET_DATABASE,
             "collection": TARGET_COLLECTION,
-            "document": source_data
+            "document": payload
     })
     response = requests.post(TARGET_BASE_URL, headers=headers, data=raw_data)
-    print(raw_data)
+    if response.status_code != 201:
+        raise ValueError("Error code was {}".format(response.status_code))
+    print("flushed to atlas")
 
-    # throw into local kafka
+def kafka_acked(err, msg):
+    if err is not None:
+        raise ValueError("Failed to deliver message: {}: {}".format(str(err), str(msg)))
+
+def send_to_kafka(payload):
     conf = {'bootstrap.servers': TARGET_KAFKA}
     producer = Producer(conf)
-    producer.produce(TARGET_TOPIC, value=json.dumps(source_data))
-    producer.flush()
-
-    return response
+    producer.produce(TARGET_TOPIC, value=json.dumps(payload), callback=kafka_acked)
+    producer.poll(3)
+    print("flushed to kafka")
 
 def main():
     while True:
         try:
-            print(send())
+            d = fetch()
+            send_to_atlas(d)
+            if TARGET_KAFKA:
+                send_to_kafka(d)
         except Exception as e:
             print("ERROR: unable to fetch {}".format(e))
         time.sleep(30)
