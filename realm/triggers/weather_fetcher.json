@@ -1,0 +1,17 @@
+{
+    "id": "6421a2c400747d0b63f0397e",
+    "name": "weather_fetcher",
+    "type": "SCHEDULED",
+    "config": {
+        "schedule": "*/5 * * * *",
+        "skip_catchup_events": false
+    },
+    "disabled": false,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "Atlas_Triggers_weather_fetcher_1679940163"
+            }
+        }
+    }
+}

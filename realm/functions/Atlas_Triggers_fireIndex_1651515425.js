@@ -75,6 +75,6 @@ exports = function(changeEvent) {
             console.log(`Successfully grouped: ${firedanger }`);
             return firedanger;
         })
-        .catch(err => console.error(`Failed to group data: ${err}`));
+        .catch(err => console.error(`Failed to group purchases by customer: ${err}`));
 
 };
