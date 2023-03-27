@@ -4,7 +4,6 @@ exports = function(changeEvent) {
     const collection = context.services.get("KGShardedCluster01").db("demo").collection("strikes");
     const usersCollection = context.services.get("KGShardedCluster01").db("demo").collection("users"); 
     const logCollection = context.services.get("KGShardedCluster01").db("demo").collection("strikeslog");
-    const tsCollection = context.services.get("KGShardedCluster01").db("demo").collection("tsweather");
     strikeFound = 0;
     messageAck = "";
 
@@ -60,12 +59,6 @@ exports = function(changeEvent) {
             createdAt: fullDocument.createdAt
         };
         logCollection.insertOne(logDocument);
-
-        /* timeseries */
-        const tsDocument = fullDocument.obs[0];
-        tsDocument.metadata = {station: fullDocument.station_id};
-        tsDocument.ts = fullDocument.createdAt;
-        tsCollection.insertOne(tsDocument);
     }
 
     return strikeFound;
