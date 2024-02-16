@@ -3,7 +3,6 @@ import json
 import os
 import time
 
-from confluent_kafka import Producer
 import socket
 
 SOURCE_BASE_URL = os.environ.get('SOURCE_BASE_URL')
@@ -15,8 +14,6 @@ TARGET_KEY = os.environ.get('TARGET_KEY')
 TARGET_NAME = os.environ.get('TARGET_NAME')
 TARGET_COLLECTION = os.environ.get('TARGET_COLLECTION')
 TARGET_DATABASE = os.environ.get('TARGET_DATABASE')
-TARGET_TOPIC = os.environ.get('TARGET_TOPIC')
-TARGET_KAFKA = os.environ.get('TARGET_KAFKA')
 
 def fetch():
     url = "{}{}/?token={}".format(SOURCE_BASE_URL, SOURCE_STATION, SOURCE_KEY)
@@ -45,26 +42,14 @@ def send_to_atlas(payload):
         raise ValueError("Error code was {}".format(response.status_code))
     print("flushed to atlas")
 
-def kafka_acked(err, msg):
-    if err is not None:
-        raise ValueError("Failed to deliver message: {}: {}".format(str(err), str(msg)))
-
-def send_to_kafka(payload):
-    conf = {'bootstrap.servers': TARGET_KAFKA}
-    producer = Producer(conf)
-    producer.produce(TARGET_TOPIC, value=json.dumps(payload), callback=kafka_acked)
-    producer.poll(3)
-    print("flushed to kafka")
-
 def main():
     while True:
         try:
             d = fetch()
-            send_to_atlas(d)
-            if TARGET_KAFKA:
-                send_to_kafka(d)
+            if TARGET_BASE_URL:
+                send_to_atlas(d)
         except Exception as e:
-            print("ERROR: unable to fetch {}".format(e))
+            print("ERROR: unable to process data {}".format(e))
         time.sleep(30)
 
 if __name__ == "__main__":
