@@ -27,11 +27,14 @@ def fetch():
     return d
 
 def sendDataAtlas(d):
-   mongoclient = MongoClient(MONGOURI)
-   db = mongoclient[TARGET_DATABASE]
-   col = db[TARGET_COLLECTION]
-   print(json.dumps(d))
-   col.insert_one(d)
+    try:
+        mongoclient = MongoClient(MONGOURI)
+        db = mongoclient[TARGET_DATABASE]
+        col = db[TARGET_COLLECTION]
+        print(json.dumps(d))
+        col.insert_one(d)
+    except Exception as e:
+       print("An error occurred: {}").format(e)
 
 def main():
     while True:
